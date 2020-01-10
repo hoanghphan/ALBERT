@@ -7,6 +7,8 @@ from pedl.trial import get_gang_addrs
 
 import run_classifier
 import radam
+from run_classifier import main
+
 
 def get_tf_flags(hparams):
 
@@ -36,7 +38,28 @@ def get_tf_flags(hparams):
         "num_tpu_cores", 8,
         "Only used if `use_tpu` is True. Total number of TPU cores to use.")
 
-    combined_dict = hparams + pedl.get_data_config()
+    # combined_dict = hparams + pedl.get_data_config()
+
+    combined_dict = {
+        "data_dir": "/home/hphan/data/glue",
+        "output_dir": "/home/hphan/output",
+        "init_checkpoint": "/home/hphan/data/albert_base",
+        "albert_config_file": "/home/hphan/data/albert_base/albert_config.json",
+        "spm_model_file": "/home/hphan/data/albert_base/30k-clean.model",
+        "do_train": True,
+        "do_eval": False,
+        "do_predict": False,
+        "do_lower_case": True,
+        "max_seq_length": 128,
+        "optimizer":"adamw",
+        "task_name":"MNLI",
+        "warmup_step":1000,
+        "learning_rate":3e-5,
+        "train_step":10000,
+        "save_checkpoints_steps":100,
+        "train_batch_size":128,
+    }
+
     for key in combined_dict:
         FLAGS[key].value = combined_dict[key]
 
@@ -46,3 +69,6 @@ def get_tf_flags(hparams):
 if __name__ == "__main__":
 
     flags = get_tf_flags()
+    main(flags)
+
+
