@@ -51,7 +51,7 @@ def get_tf_flags():
         "albert_config_file": "/home/hphan/data/albert_base/albert_config.json",
         "spm_model_file": "/home/hphan/data/albert_base/30k-clean.model",
         "do_train": True,
-        "do_eval": False,
+        "do_eval": True,
         "do_predict": False,
         "do_lower_case": True,
         "max_seq_length": 128,
@@ -61,7 +61,7 @@ def get_tf_flags():
         "learning_rate":3e-5,
         "train_step":10000,
         "save_checkpoints_steps":100,
-        "train_batch_size":128,
+        "train_batch_size":64,
     }
 
     for key in combined_dict:
@@ -71,18 +71,20 @@ def get_tf_flags():
 
 class ALBERTTrial(EstimatorTrial):
 
+    def __init__(self, hparams):
+        self.flags = get_tf_flags()
+
     def build_estimator(self, hparams):
-        flags = get_tf_flags()
         run_type="build_estimator"
-        estimator = main(flags,run_type)
+        estimator = main(self.flags,run_type)
         return estimator
 
     def build_train_spec(self, hparams):
         run_type="build_train_spec"
-        train_spec = main(flags, run_type)
+        train_spec = main(self.flags, run_type)
         return train_spec
 
     def build_validation_spec(self, hparams):
         run_type="build_eval_spec"
-        eval_spec = main(flags, run_type)
+        eval_spec = main(self.flags, run_type)
         return eval_spec

@@ -249,7 +249,7 @@ def main(flags, run_type):
       eval_batch_size=FLAGS.eval_batch_size,
       predict_batch_size=FLAGS.predict_batch_size)
 
-  if run_type="build_estimator":
+  if run_type=="build_estimator":
       return estimator
 
   if FLAGS.do_train:
@@ -274,7 +274,7 @@ def main(flags, run_type):
         use_tpu=FLAGS.use_tpu,
         bsz=FLAGS.train_batch_size)
 
-    if run_type="build_train_spec":
+    if run_type=="build_train_spec":
         return tf.estimator.TrainSpec(input_fn=train_input_fn)
 
     #estimator.train(input_fn=train_input_fn, max_steps=FLAGS.train_step)
@@ -324,7 +324,7 @@ def main(flags, run_type):
         use_tpu=FLAGS.use_tpu,
         bsz=FLAGS.eval_batch_size)
 
-    if run_type="build_eval_spec":
+    if run_type=="build_eval_spec":
         return tf.estimator.EvalSpec(input_fn=eval_input_fn)
 
     best_trial_info_file = os.path.join(FLAGS.output_dir, "best_trial.txt")
