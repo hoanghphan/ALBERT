@@ -9,6 +9,8 @@ import run_classifier
 #import radam
 from run_classifier import main
 import tensorflow as tf
+from pedl.frameworks.tensorflow.estimator_trial import EstimatorTrial
+import pedl
 
 def get_tf_flags():
 
@@ -67,10 +69,20 @@ def get_tf_flags():
 
     return flags
 
+class ALBERTTrial(EstimatorTrial):
 
-if __name__ == "__main__":
+    def build_estimator(self, hparams):
+        flags = get_tf_flags()
+        run_type="build_estimator"
+        estimator = main(flags,run_type)
+        return estimator
 
-    flags = get_tf_flags()
-    main(flags)
+    def build_train_spec(self, hparams):
+        run_type="build_train_spec"
+        train_spec = main(flags, run_type)
+        return train_spec
 
-
+    def build_validation_spec(self, hparams):
+        run_type="build_eval_spec"
+        eval_spec = main(flags, run_type)
+        return eval_spec

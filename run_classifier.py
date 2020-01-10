@@ -141,12 +141,8 @@ flags.DEFINE_integer(
     "Only used if `use_tpu` is True. Total number of TPU cores to use.")
 
 
-def main(_):
+def main(flags, run_type):
   tf.logging.set_verbosity(tf.logging.INFO)
-
-  # Check what's in flags
-  for key,value in flags.FLAGS.__flags.items():
-    print("{} : {}".format(key,flags.FLAGS.__getitem__(key))) 
 
   processors = {
       "cola": classifier_utils.ColaProcessor,
@@ -253,6 +249,9 @@ def main(_):
       eval_batch_size=FLAGS.eval_batch_size,
       predict_batch_size=FLAGS.predict_batch_size)
 
+  if run_type="build_estimator":
+      return estimator
+
   if FLAGS.do_train:
     cached_dir = FLAGS.cached_dir
     if not cached_dir:
@@ -274,7 +273,11 @@ def main(_):
         task_name=task_name,
         use_tpu=FLAGS.use_tpu,
         bsz=FLAGS.train_batch_size)
-    estimator.train(input_fn=train_input_fn, max_steps=FLAGS.train_step)
+
+    if run_type="build_train_spec":
+        return tf.estimator.TrainSpec(input_fn=train_input_fn)
+
+    #estimator.train(input_fn=train_input_fn, max_steps=FLAGS.train_step)
 
   if FLAGS.do_eval:
     eval_examples = processor.get_dev_examples(FLAGS.data_dir)
@@ -320,6 +323,9 @@ def main(_):
         task_name=task_name,
         use_tpu=FLAGS.use_tpu,
         bsz=FLAGS.eval_batch_size)
+
+    if run_type="build_eval_spec":
+        return tf.estimator.EvalSpec(input_fn=eval_input_fn)
 
     best_trial_info_file = os.path.join(FLAGS.output_dir, "best_trial.txt")
 

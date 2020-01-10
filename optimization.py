@@ -24,7 +24,7 @@ import six
 from six.moves import zip
 import tensorflow.compat.v1 as tf
 from tensorflow.contrib import tpu as contrib_tpu
-
+from pedl.frameworks.tensorflow import estimator_wrap
 
 def create_optimizer(loss, init_lr, num_train_steps, num_warmup_steps, use_tpu,
                      optimizer="adamw", poly_power=1.0, start_warmup_step=0):
@@ -93,6 +93,8 @@ def create_optimizer(loss, init_lr, num_train_steps, num_warmup_steps, use_tpu,
 
   if use_tpu:
     optimizer = contrib_tpu.CrossShardOptimizer(optimizer)
+
+  optimizer = estimator_wrap.wrap_optimizer(optimizer)
 
   tvars = tf.trainable_variables()
   grads = tf.gradients(loss, tvars)
