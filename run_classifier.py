@@ -144,6 +144,10 @@ flags.DEFINE_integer(
 def main(_):
   tf.logging.set_verbosity(tf.logging.INFO)
 
+  # Check what's in flags
+  for key,value in flags.FLAGS.__flags.items():
+    print("{} : {}".format(key,flags.FLAGS.__getitem__(key))) 
+
   processors = {
       "cola": classifier_utils.ColaProcessor,
       "mnli": classifier_utils.MnliProcessor,
