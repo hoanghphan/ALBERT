@@ -1,0 +1,41 @@
+description:
+data:
+  data_dir:
+    # "The input data dir. Should contain the .tsv files (or other data files) "
+    # "for the task."
+  albert_config_file:
+    # "The config json file corresponding to the pre-trained ALBERT model."
+    # "This specifies the model architecture."
+  task_name:
+    # "The name of the task to train."
+  vocab_file:
+    # "The vocabulary file that the ALBERT model was trained on."
+  spm_model_file:
+    # "The model file for sentence piece tokenization."
+  output_dir:
+    # "The output directory where the model checkpoints will be written."
+  cached_dir:
+    # "Path to cached training and dev tfrecord file. "
+    # "The file will be generated if not exist."
+  init_checkpoint:  # Initial checkpoint (usually from a pre-trained BERT model).
+  albert_hub_module_handle:  # If set, the ALBERT hub module to use.
+  do_lower_case: # Whether to lower case the input text. Should be True for uncased models and False for cased models.
+  max_seq_length: 512
+    # "The maximum total input sequence length after WordPiece tokenization. "
+    # "Sequences longer than this will be truncated, and sequences shorter "
+    # "than this will be padded."
+  optimizer: adamw
+  do_train: # remove
+  do_eval: # remove
+  do_predict: # remove
+hyperparameters:
+  train_batch_size: 32
+  eval_batch_size: 8
+  predict_batch_size: 8
+  learning_rate: 5e-5
+  train_step: 1000 # remove
+  warmup_step: 0 # remove
+  save_checkpoints_steps: 1000 # remove
+  keep_checkpoints_max: 5 # remove
+  iterations_per_loop: 1000 # remove
+  use_tpu: False # remove
